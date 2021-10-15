@@ -30,3 +30,25 @@ function operate(oper, a, b) {
 			break;
 	}
 }
+
+const display = document.querySelector(".display-num");
+const nums = document.querySelectorAll(".num");
+const operators = document.querySelectorAll(".operator");
+
+let displayVlaue = "";
+
+function writeToDisplay(e) {
+	if (e.target.getAttribute("class") === "operator") {
+		displayVlaue += ` ${e.target.getAttribute("value")} `;
+	} else {
+		displayVlaue += e.target.getAttribute("value");
+	}
+	display.textContent = displayVlaue;
+}
+
+nums.forEach((element) => {
+	element.addEventListener("click", writeToDisplay);
+});
+operators.forEach((element) => {
+	element.addEventListener("click", writeToDisplay);
+});

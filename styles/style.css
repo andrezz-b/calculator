@@ -18,6 +18,15 @@ time, mark, audio, video {
 	font: inherit;
 	vertical-align: baseline;
 }
+button, input[type="submit"], input[type="reset"] {
+	background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+}
 
 html{
     box-sizing: border-box;
@@ -42,9 +51,23 @@ body {
     gap: 20px
 }
 
-.display {
+.display-wrap {
     border: 1px solid black;
+    box-sizing: content-box;
     height: 20%;
+    padding: 15px;
+}
+
+.display-wrap .display-prev {
+    text-align: right;
+}
+
+.display-wrap .display-num {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 60px;
+    height: 80%;
 }
 
 .btns {
@@ -69,6 +92,8 @@ body {
     padding: 10px 20px;
     font-size: 20px;
     flex: 1;
+    background-color: rgb(255, 97, 97);
+    color: white;
 }
 
 .wrap {
@@ -90,6 +115,9 @@ body {
 }
 
 .numbers button {
+    border: 1px solid gray;
+    background-color: #424242;
+    color: white;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -98,4 +126,9 @@ body {
     padding: 20px;
     font-size: 20px;
     flex: 1;
+}
+
+.numbers .operator{
+    background-color: #c2c2c2;
+    color: black;
 }
