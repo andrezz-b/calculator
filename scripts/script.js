@@ -41,10 +41,9 @@ let operatorValueNew = "";
 function writeToNumDisplay(e) {
 	if (e.target.getAttribute("class") === "operator") {
 		if (operatorCount === 2) {
-
 			/* Passes the newly pressed operator so that it can be used for displaying the next operation to the user, also allows the calculate to use the previous operator to get the needed result */
-			
-			operatorValueNew = e.target.getAttribute("value"); 
+
+			operatorValueNew = e.target.getAttribute("value");
 			calculate(true);
 
 			/* After the calculation sets the operator to the current one so that the user can use the "=" button and get the correct result */
@@ -73,7 +72,9 @@ operators.forEach((element) => {
 });
 
 equals.addEventListener("click", function () {
-	calculate(false);
+	if (!(isNaN(parseFloat(prevOper.textContent)))){
+		calculate(false);
+	}
 });
 
 function calculate(toPrev) {
@@ -82,7 +83,10 @@ function calculate(toPrev) {
 	);
 	let numInput2 = parseFloat(displayVlaue);
 	let operationString = `${numInput1} ${operatorValue} ${numInput2} =`;
-	let result = operate(operatorValue, numInput1, numInput2);
+	let result =
+		Math.round(
+			(operate(operatorValue, numInput1, numInput2) + Number.EPSILON) * 1000
+		) / 1000;
 	displayResult(result, operationString, toPrev);
 }
 
