@@ -31,70 +31,105 @@ const display = document.querySelector(".display-num");
 const nums = document.querySelectorAll(".num");
 const operators = document.querySelectorAll(".operator");
 const equals = document.querySelector("#operate");
-const prevOper = document.querySelector(".display-prev");
+const prev = document.querySelector(".display-prev");
+const clearBtn = document.querySelector("#clear-btn");
 
-let displayVlaue = "";
-let operatorValue = "";
+let inputNum1 = "";
+let inputNum2 = "";
 let operatorCount = 0;
-let operatorValueNew = "";
-
-function writeToNumDisplay(e) {
-	if (e.target.getAttribute("class") === "operator") {
-		if (operatorCount === 2) {
-			/* Passes the newly pressed operator so that it can be used for displaying the next operation to the user, also allows the calculate to use the previous operator to get the needed result */
-
-			operatorValueNew = e.target.getAttribute("value");
-			calculate(true);
-
-			/* After the calculation sets the operator to the current one so that the user can use the "=" button and get the correct result */
-			operatorValue = e.target.getAttribute("value");
-			operatorCount = 1;
-		} else {
-			operatorValue = e.target.getAttribute("value");
-			prevOper.textContent = displayVlaue + ` ${operatorValue} `;
-			operatorCount++;
-		}
-	} else {
-		if (operatorCount === 1) {
-			displayVlaue = "";
-			operatorCount++;
-		}
-		displayVlaue += e.target.getAttribute("value");
-		display.textContent = displayVlaue;
-	}
-}
+let operatorValue = "";
+let operationComplete = "";
+let operatorValueOld = "";
 
 nums.forEach((element) => {
-	element.addEventListener("click", writeToNumDisplay);
+	element.addEventListener("click", writeNumDisplay);
 });
 operators.forEach((element) => {
-	element.addEventListener("click", writeToNumDisplay);
+	element.addEventListener("click", writeOperDisplay);
 });
+
+function writeNumDisplay(e) {
+	if (operatorCount === 0) {
+		inputNum1 += e.target.getAttribute("value");
+		display.textContent = inputNum1;
+	} else if (operatorCount === 1) {
+		inputNum2 += e.target.getAttribute("value");
+		display.textContent = inputNum2;
+	}
+}
+
+function writeOperDisplay(e) {
+	operatorValue = e.target.getAttribute("value");
+	if (operatorCount === 0) {
+		prev.textContent = inputNum1 + ` ${operatorValue} `;
+		display.textContent = "";
+		operatorCount++;
+	} else if (operatorCount === 1) {
+		if (!(inputNum2 === "")) {
+			if (divideZeroCheck(false)) {
+				return;
+			}
+			operationComplete = prev.textContent + inputNum2;
+			console.log(operationComplete);
+			calculate(operationComplete, false);
+		}
+		display.textContent = "";
+		prev.textContent = inputNum1 + ` ${operatorValue} `;
+	}
+	operatorValueOld = operatorValue;
+}
+
+function calculate(value, equals) {
+	let numArray = value.split(`${operatorValueOld}`);
+	numArray = numArray.map((element) => parseFloat(element.trim()));
+	let result = operate(operatorValueOld, numArray[0], numArray[1]);
+	result = Math.round((result + Number.EPSILON) * 1000) / 1000;
+	if (equals) {
+		inputNum1 = result;
+		inputNum2 = "";
+		display.textContent = result;
+		prev.textContent = value + " =";
+	} else {
+		inputNum1 = result;
+		inputNum2 = "";
+		display.textContent = "";
+	}
+}
+
+function divideZeroCheck(equals) {
+	if (equals) {
+		if (operatorValue === "÷" && inputNum2 === "0") {
+			alert("You cannot divide by zero!");
+			inputNum2 = "";
+            display.textContent = "";
+			return true;
+		}
+	}
+	if (operatorValueOld === "÷" && inputNum2 === "0") {
+		alert("You cannot divide by zero!");
+		inputNum2 = "";
+        display.textContent = "";
+		return true;
+	}
+}
 
 equals.addEventListener("click", function () {
-	if (!(isNaN(parseFloat(prevOper.textContent)))){
-		calculate(false);
+	if (!isNaN(parseFloat(prev.textContent)) && !isNaN(parseFloat(inputNum2))) {
+		if (divideZeroCheck(true)) {
+			return;
+		}
+		operationComplete = inputNum1 + ` ${operatorValue} ` + inputNum2;
+		calculate(operationComplete, true);
 	}
 });
 
-function calculate(toPrev) {
-	let numInput1 = parseFloat(
-		prevOper.textContent.slice(0, prevOper.textContent.length - 3)
-	);
-	let numInput2 = parseFloat(displayVlaue);
-	let operationString = `${numInput1} ${operatorValue} ${numInput2} =`;
-	let result =
-		Math.round(
-			(operate(operatorValue, numInput1, numInput2) + Number.EPSILON) * 1000
-		) / 1000;
-	displayResult(result, operationString, toPrev);
-}
-
-function displayResult(value, string, toPrev) {
-	if (toPrev) {
-		prevOper.textContent = `${value} ${operatorValueNew} `;
-	} else {
-		prevOper.textContent = string;
-		display.textContent = value;
-	}
-}
+clearBtn.addEventListener("click", function () {
+	inputNum1 = "";
+	inputNum2 = "";
+	operatorCount = 0;
+	operatorValue = "";
+	operationComplete = "";
+	operatorValueOld = "";
+	display.textContent = "0";
+	prev.textContent = "";
+});
