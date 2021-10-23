@@ -63,11 +63,11 @@ clearBtn.addEventListener("click", function () {
 deleteBtn.addEventListener("click", function () {
 	if (display.textContent == inputNum1) {
 		inputNum1 = inputNum1.substring(0, inputNum1.length - 1);
-		inputNum1 = inputNum1 === "" ? "0" : inputNum1;
+		inputNum1 = checkMinusEmpty(inputNum1);
 		display.textContent = inputNum1;
 	} else if (display.textContent == inputNum2) {
 		inputNum2 = inputNum2.substring(0, inputNum2.length - 1);
-		inputNum2 = inputNum2 === "" ? "0" : inputNum2;
+		inputNum2 = checkMinusEmpty(inputNum2);
 		display.textContent = inputNum2;
 	} else if (display.textContent === "" && !(prev.textContent === "")) {
 	}
@@ -178,5 +178,15 @@ function checkStartEnd(string, val, char) {
 		return string.startsWith(char);
 	} else if (val === "end") {
 		return string.endsWith(char);
+	}
+}
+
+function checkMinusEmpty (num){
+	if (num === ""){
+		return "0"
+	} else if (num === "-"){
+		return "0"
+	} else {
+		return num
 	}
 }
