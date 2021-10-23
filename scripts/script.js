@@ -1,29 +1,13 @@
-function add(a, b) {
-	return a + b;
-}
-
-function subtract(a, b) {
-	return a - b;
-}
-
-function multiply(a, b) {
-	return a * b;
-}
-
-function divide(a, b) {
-	return a / b;
-}
-
 function operate(oper, a, b) {
 	switch (oper) {
 		case "+":
-			return add(a, b);
+			return a + b;
 		case "-":
-			return subtract(a, b);
+			return a - b;
 		case "×":
-			return multiply(a, b);
+			return a * b;
 		case "÷":
-			return divide(a, b);
+			return a / b;
 	}
 }
 
@@ -34,6 +18,7 @@ const operators = document.querySelectorAll(".operator");
 const equals = document.querySelector("#operate");
 const prev = document.querySelector(".display-prev");
 const clearBtn = document.querySelector("#clear-btn");
+const deleteBtn = document.querySelector("#delete-btn");
 
 let inputNum1 = "";
 let inputNum2 = "";
@@ -73,6 +58,19 @@ clearBtn.addEventListener("click", function () {
 	display.textContent = "0";
 	prev.textContent = "";
 	decimalPointUsed = false;
+});
+
+deleteBtn.addEventListener("click", function () {
+	if (display.textContent == inputNum1) {
+		inputNum1 = inputNum1.substring(0, inputNum1.length - 1);
+		inputNum1 = inputNum1 === "" ? "0" : inputNum1;
+		display.textContent = inputNum1;
+	} else if (display.textContent == inputNum2) {
+		inputNum2 = inputNum2.substring(0, inputNum2.length - 1);
+		inputNum2 = inputNum2 === "" ? "0" : inputNum2;
+		display.textContent = inputNum2;
+	} else if (display.textContent === "" && !(prev.textContent === "")) {
+	}
 });
 
 decimalPoint.addEventListener("click", function (e) {
@@ -129,9 +127,7 @@ function writeOperDisplay(e) {
 			if (divideZeroCheck(false)) {
 				return;
 			}
-
 			operationComplete = prev.textContent + inputNum2;
-			console.log(operationComplete);
 			calculate(operationComplete, false);
 		}
 		display.textContent = "";
@@ -141,23 +137,20 @@ function writeOperDisplay(e) {
 }
 
 function calculate(value, equals) {
-	let numArray = value.split(`${operatorValueOld}`);
+	let numArray = value.split(` ${operatorValueOld} `);
 
-	//Splita  - i u broju i kao operaciju -10 - 20 => ["", "10 ", " 20"]
-	numArray = numArray.filter(el => !(el === ""));
 	numArray = numArray.map((element) => parseFloat(element.trim()));
-	
-	console.log(numArray)
+
 	let result = operate(operatorValueOld, numArray[0], numArray[1]);
 	result = Math.round(result * 1000) / 1000;
 	decimalPointUsed = false;
 	if (equals) {
-		inputNum1 = result;
+		inputNum1 = String(result);
 		inputNum2 = "";
 		display.textContent = result;
 		prev.textContent = value + " =";
 	} else {
-		inputNum1 = result;
+		inputNum1 = String(result);
 		inputNum2 = "";
 		display.textContent = "";
 	}
