@@ -36,6 +36,9 @@ operators.forEach((element) => {
 });
 
 equals.addEventListener("click", function () {
+
+	// First if prevents pressing the = button if there is no operator or the second number
+
 	if (!isNaN(parseFloat(prev.textContent)) && !isNaN(parseFloat(inputNum2))) {
 		if (divideZeroCheck(true)) {
 			return;
@@ -62,16 +65,26 @@ clearBtn.addEventListener("click", function () {
 
 deleteBtn.addEventListener("click", function () {
 	if (display.textContent == inputNum1) {
-		decimalPointUsed = !(checkStartEnd(inputNum1, "end", "."));
+		decimalPointUsed = !checkStartEnd(inputNum1, "end", ".");
 		inputNum1 = inputNum1.substring(0, inputNum1.length - 1);
 		inputNum1 = checkMinusEmpty(inputNum1);
 		display.textContent = inputNum1;
+		
+	} else if (
+		(display.textContent === "" || display.textContent === "0") &&
+		!(prev.textContent === "")
+	) {
+		prev.textContent = prev.textContent.substring(0, prev.textContent.length - 2);
+		operatorCount = 0;
+		display.textContent = prev.textContent;
+		prev.textContent = "";
+		inputNum1 = display.textContent;
+
 	} else if (display.textContent == inputNum2) {
-		decimalPointUsed = !(checkStartEnd(inputNum2, "end", "."));
+		decimalPointUsed = !checkStartEnd(inputNum2, "end", ".");
 		inputNum2 = inputNum2.substring(0, inputNum2.length - 1);
 		inputNum2 = checkMinusEmpty(inputNum2);
 		display.textContent = inputNum2;
-	} else if (display.textContent === "" && !(prev.textContent === "")) {
 	}
 });
 
@@ -92,17 +105,28 @@ decimalPoint.addEventListener("click", function (e) {
 function writeNumDisplay(e) {
 	if (operatorCount === 0) {
 		inputNum1 += e.target.getAttribute("value");
+		
+		// Checks if the number starts with 0 like 0235 and removes the 0 so it's only 235 
+		
 		inputNum1 =
 			checkStartEnd(inputNum1, "start", "0") && inputNum1.length > 1
 				? inputNum1.replace("0", "")
 				: inputNum1;
+
+		// Checks if the number starts with . like .235 and adds a 0 so the number becomes 0.235 
+
 		inputNum1 = checkStartEnd(inputNum1, "start", ".")
 			? "0" + inputNum1
 			: inputNum1;
+
+
 		display.textContent = inputNum1;
 	} else if (operatorCount === 1) {
 		prev.textContent = inputNum1 + ` ${operatorValue} `;
 		inputNum2 += e.target.getAttribute("value");
+
+		// Same checks but for the other number
+
 		inputNum2 =
 			checkStartEnd(inputNum2, "start", "0") && inputNum2.length > 1
 				? inputNum2.replace("0", "")
@@ -110,20 +134,28 @@ function writeNumDisplay(e) {
 		inputNum2 = checkStartEnd(inputNum2, "start", ".")
 			? "0" + inputNum2
 			: inputNum2;
+
 		display.textContent = inputNum2;
 	}
 }
 
 function writeOperDisplay(e) {
 	operatorValue = e.target.getAttribute("value");
+
 	if (operatorCount === 0) {
+
+		//Checks if the number ends with . like 235. and removes the . so it's 235
+
 		inputNum1 = checkStartEnd(inputNum1, "end", ".")
 			? inputNum1.replace(".", "")
 			: inputNum1;
+
+
 		prev.textContent = inputNum1 + ` ${operatorValue} `;
 		display.textContent = "";
 		decimalPointUsed = false;
 		operatorCount++;
+
 	} else if (operatorCount === 1) {
 		if (!(inputNum2 === "")) {
 			if (divideZeroCheck(false)) {
@@ -146,6 +178,7 @@ function calculate(value, equals) {
 	let result = operate(operatorValueOld, numArray[0], numArray[1]);
 	result = Math.round(result * 1000) / 1000;
 	decimalPointUsed = false;
+
 	if (equals) {
 		inputNum1 = String(result);
 		inputNum2 = "";
@@ -183,12 +216,12 @@ function checkStartEnd(string, val, char) {
 	}
 }
 
-function checkMinusEmpty (num){
-	if (num === ""){
-		return "0"
-	} else if (num === "-"){
-		return "0"
+function checkMinusEmpty(num) {
+	if (num === "") {
+		return "0";
+	} else if (num === "-") {
+		return "0";
 	} else {
-		return num
+		return num;
 	}
 }
