@@ -72,6 +72,9 @@ deleteBtn.addEventListener("click", function () {
 	if (display.textContent == inputNum1) {
 		decimalPointUsed = !checkStartEnd(inputNum1, "end", ".");
 		inputNum1 = inputNum1.substring(0, inputNum1.length - 1);
+
+		// Checks if the user deleted the whole number so it replaces the emtpy string with a 0, also replaces if the user deleted the number but left the "-" it also replaces it with a zero
+
 		inputNum1 = checkMinusEmpty(inputNum1);
 		display.textContent = inputNum1;
 		
@@ -166,10 +169,15 @@ function writeOperDisplay(e) {
 
 		prev.textContent = inputNum1 + ` ${operatorValue} `;
 		display.textContent = "";
-		decimalPointUsed = false;
+
+		// Resets the decimal point becasue a new number is being inputted
+		decimalPointUsed = false; 
 		operatorCount++;
 
 	} else if (operatorCount === 1) {
+		
+		// Checks if the 2nd number is inputted after the 2nd operator press, if it is then it has to calculate because the task was 1 operation at a time, if it isn't it changes to a new inputted operator
+
 		if (!(inputNum2 === "")) {
 			if (divideZeroCheck(false)) {
 				return;
@@ -184,12 +192,14 @@ function writeOperDisplay(e) {
 }
 
 function calculate(value, equals) {
+
+	// Splits the whole expression by the operator and converts the 2 array elemnts to a number so it can calculate with them
+
 	let numArray = value.split(` ${operatorValueOld} `);
-
 	numArray = numArray.map((element) => parseFloat(element.trim()));
-
 	let result = operate(operatorValueOld, numArray[0], numArray[1]);
 	result = Math.round(result * 1000) / 1000;
+
 	decimalPointUsed = false;
 
 	if (equals) {
@@ -216,6 +226,7 @@ function divideZeroCheck(equals) {
 	if (operatorValueOld === "÷" && inputNum2 === "0") {
 		alert("You cannot divide by zero!");
 		inputNum2 = "";
+		operatorValue = operatorValueOld;
 		display.textContent = "";
 		return true;
 	}
@@ -249,8 +260,7 @@ function changeNumberSign (num){
 	if (checkStartEnd(num, "start", "-")){
 		num = removeFirstChar(num);
 		display.textContent = num;
-		return num
-		
+		return num	
 	} else {
 		num = "-" + num;
 		display.textContent = num;
