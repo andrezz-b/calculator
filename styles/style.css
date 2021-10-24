@@ -41,21 +41,21 @@ body {
 }
 
 .container {
-    width: 500px;
+    width: 400px;
     height: 600px;
     margin: auto;
-    padding: 25px;
+    padding: 10px;
     border: 1px solid black;
     display: flex;
     flex-flow: column nowrap;
-    gap: 20px
+    row-gap: 10px;
 }
 
 .display-wrap {
     border: 1px solid black;
     box-sizing: content-box;
     height: 20%;
-    padding: 15px;
+    padding: 0px 25px;
 }
 
 .display-wrap .display-prev {
@@ -64,6 +64,7 @@ body {
 
 .display-prev {
     height: 18px;
+    padding-top: 10px;
 }
 
 .display-wrap .display-num {
@@ -71,31 +72,33 @@ body {
     align-items: center;
     justify-content: flex-end;
     font-size: 60px;
-    height: 80%;
+    height: 70%;
 }
 
 .btns {
     height: 80%;
-    border: 1px solid black;
+    /* border: 1px solid black; */
     display: flex;
     flex-flow: column;
-    padding: 15px;
-    gap: 15px;
+    row-gap: 10px;
 }
 
 .clear {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-evenly;
     height: 20%;
-    border: 1px solid black;
+    /* border: 1px solid black; */
+    gap: 15px;
 }
 
 .clear button {
-    max-width: 100px;
+    width: 136px;
+    height: 85px;
     padding: 10px 20px;
-    font-size: 20px;
-    flex: 1;
+    font-size: 30px;
+    font-weight: 600;
+    flex: 1 0 auto;
     background-color: rgb(255, 97, 97);
     color: white;
 }
@@ -110,28 +113,32 @@ body {
     flex-flow: row wrap;
     align-items: center;
     align-content: space-between;
-    justify-content: space-evenly;
-    padding: 20px 40px;
+    justify-content: space-between;
     width: 100%;
-    border: 1px solid black;
-    column-gap: 50px;
+    /* border: 1px solid black; */
+    column-gap: 15px;
 }
 
-.numbers button {
+.numbers button, #negative-num {
     border: 1px solid gray;
     background-color: #424242;
     color: white;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 60px;
-    width: 60px;
-    padding: 20px;
-    font-size: 20px;
-    flex: 1;
+    max-height: 85px;
+    max-width: 85px;
+    padding: 30px;
+    font-size: 40px;
+    font-weight: 700;
+    flex: 1 0 100%;
 }
 
-.numbers .operator, #operate{
+.numbers .operator, #operate, #negative-num{
     background-color: #c2c2c2;
     color: black;
+}
+
+#negative-num {
+    margin-left: 4px;
 }
