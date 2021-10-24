@@ -19,6 +19,7 @@ const equals = document.querySelector("#operate");
 const prev = document.querySelector(".display-prev");
 const clearBtn = document.querySelector("#clear-btn");
 const deleteBtn = document.querySelector("#delete-btn");
+const numberSignBtn = document.querySelector("#number-sign");
 
 let inputNum1 = "";
 let inputNum2 = "";
@@ -32,7 +33,11 @@ nums.forEach((element) => {
 	element.addEventListener("click", writeNumDisplay);
 });
 operators.forEach((element) => {
-	element.addEventListener("click", writeOperDisplay);
+	element.addEventListener("click", function(e){
+		if (!(inputNum1 === "")){
+			writeOperDisplay(e);
+		}
+	});
 });
 
 equals.addEventListener("click", function () {
@@ -101,6 +106,14 @@ decimalPoint.addEventListener("click", function (e) {
 		}
 	}
 });
+
+numberSignBtn.addEventListener("click", function(){
+	if (display.textContent == inputNum1){
+		inputNum1 = changeNumberSign(inputNum1);
+	} else if (display.textContent == inputNum2){
+		inputNum2 = changeNumberSign(inputNum2);
+	}
+})
 
 function writeNumDisplay(e) {
 	if (operatorCount === 0) {
@@ -223,5 +236,24 @@ function checkMinusEmpty(num) {
 		return "0";
 	} else {
 		return num;
+	}
+}
+
+function removeFirstChar (string){
+	string = string.split("")
+	string.shift()
+	return string.join("")
+}
+
+function changeNumberSign (num){
+	if (checkStartEnd(num, "start", "-")){
+		num = removeFirstChar(num);
+		display.textContent = num;
+		return num
+		
+	} else {
+		num = "-" + num;
+		display.textContent = num;
+		return num
 	}
 }

@@ -119,7 +119,7 @@ body {
     column-gap: 15px;
 }
 
-.numbers button, #negative-num {
+.numbers button, #number-sign {
     border: 1px solid gray;
     background-color: #424242;
     color: white;
@@ -134,11 +134,11 @@ body {
     flex: 1 0 100%;
 }
 
-.numbers .operator, #operate, #negative-num{
+.numbers .operator, #operate, #number-sign{
     background-color: #c2c2c2;
     color: black;
 }
 
-#negative-num {
+#number-sign {
     margin-left: 4px;
 }
