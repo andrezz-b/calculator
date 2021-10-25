@@ -37,6 +37,9 @@ window.addEventListener("keydown", function (e) {
 			case ".":
 				addDecimalPoint();
 				break;
+			case ",":
+				addDecimalPoint();
+				break;
 			case "Enter":
 				equalsCalculate();
 				break;
