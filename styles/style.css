@@ -154,3 +154,18 @@ body {
 #number-sign {
     margin-left: 4px;
 }
+
+.numbers button:hover {
+    transform: scale(1.10);
+    background-color: #1a18188a;
+}
+
+.numbers .operator:hover, #number-sign:hover, #operate:hover {
+    transform: scale(1.10);
+    background-color: #867f7f49;
+}
+
+.clear button:hover{
+    transform: scale(1.10);
+    background-color: rgb(255, 119, 119);
+}
