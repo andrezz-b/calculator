@@ -173,6 +173,7 @@ function calculate(value, equals) {
 	if (equals) {
 		inputNum1 = String(result);
 		inputNum2 = "";
+		operatorCount = 0;
 		prev.textContent = value + " =";
 		display.textContent = result;
 	} else {
