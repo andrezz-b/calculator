@@ -176,6 +176,9 @@ function calculate(value, equals) {
 		operatorCount = 0;
 		prev.textContent = value + " =";
 		display.textContent = result;
+		decimalPointUsed = function() {
+			if (inputNum1.search(".") !== -1) return true;
+		}
 	} else {
 		inputNum1 = String(result);
 		inputNum2 = "";
